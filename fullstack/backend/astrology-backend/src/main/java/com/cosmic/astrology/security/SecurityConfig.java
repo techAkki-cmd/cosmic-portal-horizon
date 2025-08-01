@@ -71,24 +71,28 @@ public class SecurityConfig {
         return source;
     }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors() // Enable CORS - This is crucial!
-                .and()
-                .csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/test/**").permitAll()
-                        .anyRequest().authenticated()
-                );
+    
+   @Bean
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http.cors() // Enable CORS - This is crucial!
+            .and()
+            .csrf().disable()
+            .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
+            .and()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .authorizeHttpRequests(authz -> authz
+                    .requestMatchers("/api/auth/**").permitAll()
+                    .requestMatchers("/api/test/**").permitAll()
+                    // ✅ ADD THIS LINE: Allow birth chart endpoints for development
+                    .requestMatchers("/api/birth-chart/**").permitAll()
+                    .anyRequest().authenticated()
+            );
 
-        http.authenticationProvider(authenticationProvider());
-        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+    http.authenticationProvider(authenticationProvider());
+    http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
-        return http.build();
-    }
+    return http.build();
+}
+
 }
