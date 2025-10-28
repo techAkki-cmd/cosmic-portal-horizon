@@ -28,6 +28,9 @@ app:
   jwtSecret: cosmicAstrologySecretKeyForJwtTokenGenerationAndValidation2024SuperSecureKeyThatIsLongEnoughForHS256Algorithm
   jwtExpirationMs: 86400000
 
+swiss-ephemeris:
+  data-path: ./ephe  
+
 logging:
   level:
     com.cosmic.astrology.security.JwtUtils: DEBUG

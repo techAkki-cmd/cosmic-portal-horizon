@@ -1,8 +1,29 @@
 // src/types/astrology.ts
 
-// ================ EXISTING TYPES ================
-// (Keep your existing types here)
+// ================ CORE INTERFACES ================
 
+/**
+ * 🌍 COORDINATES INTERFACE
+ */
+export interface Coordinates {
+  lat: number | null;
+  lng: number | null;
+}
+
+/**
+ * 👤 PERSONAL INFO INTERFACE
+ */
+export interface PersonalInfo {
+  name: string;
+  birthTime?: string;
+  birthPlace?: string;
+  coordinates: Coordinates;
+  timezone?: string;
+}
+
+/**
+ * 📧 PERSONALIZED MESSAGE
+ */
 export interface PersonalizedMessage {
   message: string;
   transitInfluence: string;
@@ -14,6 +35,471 @@ export interface PersonalizedMessage {
   moonPhase: string;
 }
 
+/**
+ * 📊 BIRTH DATA INPUT
+ */
+export interface BirthData {
+  name?: string;
+  birthDateTime: Date | string;
+  birthLocation: string;
+  birthLatitude: number;
+  birthLongitude: number;
+  timezone: string;
+}
+
+/**
+ * 🏠 HOUSE ANALYSIS INTERFACE
+ */
+export interface HouseAnalysis {
+  house: number;
+  sign: string;
+  lord: string;
+  planets: any[];
+  themes: string[];
+  strength: number;
+  interpretation: string;
+  [key: string]: any;
+}
+
+/**
+ * 🕉️ RARE YOGA INTERFACE
+ */
+export interface RareYoga {
+  name: string;
+  description: string;
+  meaning?: string;
+  planetsCombination?: string;
+  isVeryRare?: boolean;
+  remedialAction?: string;
+  rarity?: number;
+  [key: string]: any;
+}
+
+/**
+ * 📅 DASHA ENTRY INTERFACE
+ */
+export interface DashaEntry {
+  mahadashaLord: string;
+  antardashaLord: string;
+  startDate: string;
+  endDate: string;
+  interpretation: string;
+  lifeTheme: string;
+  opportunities: string;
+  challenges: string;
+  isCurrent: boolean;
+  remedies: string;
+  [key: string]: any;
+}
+
+/**
+ * 💎 PERSONALIZED REMEDY INTERFACE
+ */
+export interface PersonalizedRemedy {
+  category: string;
+  remedy: string;
+  reason: string;
+  instructions: string;
+  timing: string;
+  priority: number;
+  [key: string]: any;
+}
+
+/**
+ * 🎯 LIFE AREA INFLUENCE
+ */
+export interface LifeAreaInfluence {
+  id?: string;
+  category?: string;
+  title: string;
+  description?: string;
+  influence?: string;
+  insight?: string;
+  confidence?: number;
+  rating?: number;
+  recommendations?: string[];
+  planets?: string[];
+  timeframe?: string;
+  priority?: number;
+  icon?: string;
+  gradient?: string;
+  [key: string]: any;
+}
+
+/**
+ * 📈 ASTROLOGY USER STATS
+ */
+export interface AstrologyUserStats {
+  chartsCreated: number;
+  accuracyRate: number;
+  cosmicEnergy: string;
+  streakDays: number;
+  totalReadings: number;
+  favoriteChartType: string;
+  mostActiveTimeOfDay: string;
+  averageSessionDuration: number;
+  totalPredictions: number;
+  correctPredictions: number;
+  lastChartGenerated?: Date;
+}
+
+// ================ ENHANCED ANALYSIS INTERFACES ================
+
+/**
+ * 🕉️ YOGA DETAIL
+ */
+export interface YogaDetail {
+  yogaName: string;
+  yogaType: string;
+  description: string;
+  rarity: number;
+  strength: string;
+  manifestation: string;
+  remedy?: string;
+  instructions?: string;
+  effectiveness?: number;
+  priority?: number;
+  isVeryRare?: boolean;
+  category?: string;
+}
+
+/**
+ * 🕉️ YOGA ANALYSIS RESPONSE
+ */
+export interface YogaAnalysisResponse {
+  totalYogas: number;
+  rajaYogas: YogaDetail[];
+  dhanaYogas: YogaDetail[];
+  spiritualYogas: YogaDetail[];
+  mahapurushaYogas: YogaDetail[];
+  challengingYogas: YogaDetail[];
+  yogaStrength: number;
+  topYogas: YogaDetail[];
+  overallYogaAssessment?: string;
+}
+
+/**
+ * 📅 DASHA PERIOD
+ */
+export interface DashaPeriod {
+  period: string;
+  planet: string;
+  startDate?: string;
+  endDate?: string;
+  duration: string;
+  theme: string;
+  description?: string;
+  color?: string;
+}
+
+/**
+ * 📅 DASHA ANALYSIS RESPONSE
+ */
+export interface DashaAnalysisResponse {
+  currentMahadasha: string;
+  currentAntardasha: string;
+  currentPratyantardasha?: string;
+  mahadashaRemaining: string;
+  dashaInterpretation: string;
+  upcomingPeriods: DashaPeriod[];
+  dashaRemedies: string[];
+  favorablePeriods: string[];
+  intensity?: number;
+  dashaStrength?: string;
+}
+
+/**
+ * 💎 REMEDY DETAIL
+ */
+export interface RemedyDetail {
+  remedy: string;
+  category: string;
+  instructions: string;
+  description?: string;
+  effectiveness: number;
+  priority: number;
+  duration?: string;
+  specialNote?: string;
+}
+
+/**
+ * 💎 REMEDIAL RECOMMENDATIONS RESPONSE
+ */
+export interface RemedialRecommendationsResponse {
+  totalRemedies: number;
+  gemstoneRemedies: RemedyDetail[];
+  mantraRemedies: RemedyDetail[];
+  healthRemedies: RemedyDetail[];
+  careerRemedies: RemedyDetail[];
+  relationshipRemedies: RemedyDetail[];
+  lifestyleRemedies: RemedyDetail[];
+  priorityRemedies: RemedyDetail[];
+  overallGuidance: string;
+}
+
+/**
+ * 🌍 TRANSIT RESPONSE
+ */
+export interface TransitResponse {
+  planet: string;
+  position: number;
+  sign: string;
+  nakshatra: string;
+  pada: number;
+  nakshatraLord?: string;
+  influence?: string;
+  isRetrograde?: boolean;
+  calculatedAt?: string;
+  aspectingPlanets?: string[];
+  transitType?: 'benefic' | 'malefic' | 'neutral';
+  significantAspects?: string[];
+}
+
+/**
+ * 📊 BIRTH CHART RESPONSE - Complete Interface
+ */
+export interface BirthChartResponse {
+  // Basic astrological signs
+  sunSign?: string;
+  moonSign?: string;
+  risingSign?: string;
+  ascendantSign?: string; // Maps to risingSign via @JsonProperty
+  dominantElement?: string;
+  dominantPlanet?: string;
+  
+  // Planetary data
+  planetaryPositions?: Record<string, number>;
+  planetaryDetails?: Record<string, Record<string, any>>;
+  planetaryStrengths?: Record<string, number>;
+  planetaryStates?: Record<string, string>;
+  
+  // Chart metadata
+  chartId?: string;
+  calculatedAt?: string;
+  
+  // Birth information
+  birthLocation?: string;
+  birthDateTime?: string;
+  birthLatitude?: number;
+  birthLongitude?: number;
+  timezone?: string;
+  
+  // Vedic-specific data
+  ayanamsa?: number;
+  ayanamsaType?: string;
+  system?: string;
+  accuracy?: string;
+  
+  // House system
+  houses?: Record<string, number>;
+  vedicHouses?: Record<string, Record<string, any>>;
+  houseSystem?: string;
+  houseAnalysis?: HouseAnalysis[];
+  
+  // Nakshatra system
+  nakshatras?: Record<string, Record<string, any>>;
+  moonNakshatra?: string;
+  moonPada?: number;
+  
+  // Aspects & relationships
+  aspects?: Array<Record<string, any>>;
+  vedicAspects?: Array<Record<string, any>>;
+  
+  // Vedic lordships
+  lagnaLord?: string;
+  nakshatraLord?: string;
+  chandraLagna?: string;
+  suryaLagna?: string;
+  
+  // Yogas & combinations
+  yogas?: string[];
+  doshas?: string[];
+  vimsottariDasha?: string;
+  rareYogas?: RareYoga[];
+  
+  // Dasha & remedies
+  dashaTable?: DashaEntry[];
+  personalizedRemedies?: PersonalizedRemedy[];
+  
+  // Element analysis
+  elementDistribution?: Record<string, number>;
+  qualityDistribution?: Record<string, number>;
+  
+  // Remedies & recommendations
+  gemstoneRecommendations?: string[];
+  mantraRecommendations?: string[];
+  luckyColor?: string;
+  luckyNumbers?: number[];
+  favorableDirection?: string;
+  
+  // Interpretations
+  personalityProfile?: string;
+  careerIndications?: string;
+  relationshipTendencies?: string;
+  healthIndications?: string;
+  spiritualPath?: string;
+  
+  // Technical data
+  julianDay?: number;
+  ephemerisUsed?: string;
+  calculationSource?: string;
+  
+  // Personal information
+  personalInfo?: PersonalInfo;
+  
+  // Validation & quality
+  isValid?: boolean;
+  valid?: boolean;
+  validationMessages?: string[];
+  chartQuality?: string;
+  
+  // Flexible additional properties
+  [key: string]: any;
+}
+
+// ================ ADVANCED ANALYSIS INTERFACES ================
+
+/**
+ * 🌟 PERSONALIZED INSIGHT
+ */
+export interface PersonalizedInsight {
+  id: string;
+  category: string;
+  title: string;
+  insight: string;
+  confidence: number;
+  timeRelevant: boolean;
+  actionableSteps: string[];
+  planetaryBasis: string[];
+  expectedManifestationTime: string;
+  priority: number;
+}
+
+/**
+ * 📊 LIFE PHASE ANALYSIS
+ */
+export interface LifePhaseAnalysis {
+  id: string;
+  phase: string;
+  ageRange: {
+    start: number;
+    end: number;
+  };
+  theme: string;
+  description: string;
+  keyEvents: string[];
+  challenges: string[];
+  opportunities: string[];
+  rulingPlanet: string;
+  favorableActions: string[];
+  [key: string]: any;
+}
+
+/**
+ * 💕 COSMIC COMPATIBILITY
+ */
+export interface CosmicCompatibility {
+  overallScore: number;
+  compatibility: {
+    emotional: number;
+    mental: number;
+    physical: number;
+    spiritual: number;
+    financial: number;
+  };
+  strengths: string[];
+  challenges: string[];
+  recommendations: string[];
+  [key: string]: any;
+}
+
+/**
+ * 🎯 PERSONALIZED BIRTH CHART DATA - Main Return Type
+ */
+export interface PersonalizedBirthChartData {
+  // Core required properties
+  personalInfo: PersonalInfo;
+  planetaryPositions: Record<string, number>;
+  houseAnalysis: HouseAnalysis[];
+  ascendantSign: string;
+  dominantPlanet: string;
+  rareYogas: RareYoga[];
+  dashaTable: DashaEntry[];
+  personalizedRemedies: PersonalizedRemedy[];
+  
+  // Advanced features
+  cosmicPersonality?: any;
+  personalizedInsights?: PersonalizedInsight[];
+  lifePhaseAnalysis?: LifePhaseAnalysis[];
+  cosmicCompatibility?: CosmicCompatibility;
+  personalizedMantras?: any[];
+  luckyElements?: any;
+  predictiveInsights?: any[];
+  uniquenessScore?: number;
+  cosmicFingerprint?: string;
+  aiPersonalityAnalysis?: any;
+  evolutionaryGuidance?: any;
+  currentCosmicWeather?: any;
+  
+  // Additional optional properties
+  sunSign?: string;
+  moonSign?: string;
+  risingSign?: string;
+  dominantElement?: string;
+  
+  // Metadata
+  calculationMetadata?: {
+    ephemeris: string;
+    accuracy: string;
+    calculatedAt: string;
+    calculationTimeMs: number;
+    uniqueFeatures: string[];
+  };
+  
+  [key: string]: any;
+}
+
+// ================ LEGACY CHART INTERFACES ================
+
+/**
+ * 🏠 HOUSE POSITION
+ */
+export interface HousePosition {
+  houseNumber: number;
+  sign: string;
+  lord: string;
+  planetsInHouse: string[];
+  significance: string[];
+}
+
+/**
+ * 🔗 ASPECT DETAIL
+ */
+export interface AspectDetail {
+  fromPlanet: string;
+  toPlanet: string;
+  aspectType: string;
+  orb: number;
+  strength: 'strong' | 'medium' | 'weak';
+  influence: 'harmonious' | 'challenging' | 'neutral';
+}
+
+/**
+ * ⭐ NAKSHATRA DETAIL
+ */
+export interface NakshatraDetail {
+  nakshatra: string;
+  nakshatraNumber: number;
+  pada: number;
+  nakshatraLord: string;
+  deity: string;
+  symbol: string;
+  characteristics: string[];
+}
+
+/**
+ * 📊 BIRTH CHART (Legacy)
+ */
 export interface BirthChart {
   id: string;
   userId: string;
@@ -38,6 +524,11 @@ export interface BirthChart {
   notes?: string;
 }
 
+// ================ ADVANCED FEATURE INTERFACES ================
+
+/**
+ * 🔮 TRANSIT FORECAST
+ */
 export interface TransitForecast {
   id: string;
   date: string;
@@ -54,6 +545,9 @@ export interface TransitForecast {
   remedialSuggestions?: string[];
 }
 
+/**
+ * 📅 DASHA DATA (Comprehensive)
+ */
 export interface DashaData {
   system: 'Vimshottari' | 'Ashtottari' | 'Yogini' | 'Chara';
   birthStar: string;
@@ -82,228 +576,8 @@ export interface DashaData {
   };
 }
 
-export interface LifeAreaInfluence {
-  title: string;
-  rating: number;
-  insight: string;
-  icon: string;
-  gradient: string;
-}
-
-export interface AstrologyUserStats {
-  chartsCreated: number;
-  accuracyRate: number;
-  cosmicEnergy: string;
-  streakDays: number;
-  totalReadings: number;
-  favoriteChartType: string;
-  mostActiveTimeOfDay: string;
-  averageSessionDuration: number;
-  totalPredictions: number;
-  correctPredictions: number;
-  lastChartGenerated?: Date;
-}
-
-// ================ NEW ENHANCED TYPES ================
-
 /**
- * 🕉️ YOGA ANALYSIS RESPONSE
- * Complete response for Vedic Yoga analysis
- */
-export interface YogaAnalysisResponse {
-  totalYogas: number;
-  rajaYogas: YogaDetail[];
-  dhanaYogas: YogaDetail[];
-  spiritualYogas: YogaDetail[];
-  mahapurushaYogas: YogaDetail[];
-  challengingYogas: YogaDetail[];
-  yogaStrength: number;
-  topYogas: YogaDetail[];
-  overallYogaAssessment?: string;
-}
-
-/**
- * Individual Yoga Details
- */
-export interface YogaDetail {
-  yogaName: string;
-  yogaType: string;
-  description: string;
-  rarity: number;
-  strength: string;
-  manifestation: string;
-  remedy?: string;
-  instructions?: string;
-  effectiveness?: number;
-  priority?: number;
-  isVeryRare?: boolean;
-  category?: string;
-}
-
-/**
- * 📅 DASHA ANALYSIS RESPONSE
- * Complete response for Vimshottari Dasha analysis
- */
-export interface DashaAnalysisResponse {
-  currentMahadasha: string;
-  currentAntardasha: string;
-  currentPratyantardasha?: string;
-  mahadashaRemaining: string;
-  dashaInterpretation: string;
-  upcomingPeriods: DashaPeriod[];
-  dashaRemedies: string[];
-  favorablePeriods: string[];
-  intensity?: number;
-  dashaStrength?: string;
-}
-
-/**
- * Individual Dasha Period Details
- */
-export interface DashaPeriod {
-  period: string;
-  planet: string;
-  startDate?: string;
-  endDate?: string;
-  duration: string;
-  theme: string;
-  description?: string;
-  color?: string;
-}
-
-/**
- * 💎 REMEDIAL RECOMMENDATIONS RESPONSE
- * Complete response for personalized astrological remedies
- */
-export interface RemedialRecommendationsResponse {
-  totalRemedies: number;
-  gemstoneRemedies: RemedyDetail[];
-  mantraRemedies: RemedyDetail[];
-  healthRemedies: RemedyDetail[];
-  careerRemedies: RemedyDetail[];
-  relationshipRemedies: RemedyDetail[];
-  lifestyleRemedies: RemedyDetail[];
-  priorityRemedies: RemedyDetail[];
-  overallGuidance: string;
-}
-
-/**
- * Individual Remedy Details
- */
-export interface RemedyDetail {
-  remedy: string;
-  category: string;
-  instructions: string;
-  description?: string;
-  effectiveness: number;
-  priority: number;
-  duration?: string;
-  specialNote?: string;
-}
-
-/**
- * 🌍 TRANSIT RESPONSE
- * Individual planetary transit information
- */
-export interface TransitResponse {
-  planet: string;
-  position: number;
-  sign: string;
-  nakshatra: string;
-  pada: number;
-  nakshatraLord?: string;
-  influence?: string;
-  aspectingPlanets?: string[];
-  transitType?: 'benefic' | 'malefic' | 'neutral';
-  significantAspects?: string[];
-}
-
-/**
- * 🎯 BIRTH CHART RESPONSE
- * Complete birth chart calculation response
- */
-export interface BirthChartResponse {
-  sunSign: string;
-  moonSign: string;
-  risingSign: string;
-  dominantElement: string;
-  planetaryPositions: { [planetName: string]: number };
-  calculatedAt: string;
-  ayanamsa?: number;
-  system: string;
-  houses?: HousePosition[];
-  aspects?: AspectDetail[];
-  nakshatras?: { [planetName: string]: NakshatraDetail };
-}
-
-/**
- * House Position Details
- */
-export interface HousePosition {
-  houseNumber: number;
-  sign: string;
-  lord: string;
-  planetsInHouse: string[];
-  significance: string[];
-}
-
-/**
- * Aspect Details
- */
-export interface AspectDetail {
-  fromPlanet: string;
-  toPlanet: string;
-  aspectType: string;
-  orb: number;
-  strength: 'strong' | 'medium' | 'weak';
-  influence: 'harmonious' | 'challenging' | 'neutral';
-}
-
-/**
- * Nakshatra Details
- */
-export interface NakshatraDetail {
-  nakshatra: string;
-  nakshatraNumber: number;
-  pada: number;
-  nakshatraLord: string;
-  deity: string;
-  symbol: string;
-  characteristics: string[];
-}
-
-/**
- * 🌟 COMPLETE ANALYSIS RESPONSE
- * Comprehensive response containing all analysis types
- */
-export interface CompleteAnalysisResponse {
-  personalizedMessage: PersonalizedMessage;
-  birthChart: BirthChartResponse;
-  yogaAnalysis: YogaAnalysisResponse;
-  dashaAnalysis: DashaAnalysisResponse;
-  remedialRecommendations: RemedialRecommendationsResponse;
-  currentTransits: TransitResponse[];
-  lifeAreaInfluences: LifeAreaInfluence[];
-  userStats: AstrologyUserStats;
-  analysisTimestamp: string;
-  analysisId?: string;
-}
-
-/**
- * Birth Data Input
- */
-export interface BirthData {
-  birthDateTime: Date;
-  birthLocation: string;
-  birthLatitude: number;
-  birthLongitude: number;
-  timezone: string;
-}
-
-// ================ MISSING TYPES FROM YOUR CURRENT FILE ================
-
-/**
- * 📊 DASHA PERIOD DETAIL - Referenced in DashaData
+ * 📊 DASHA PERIOD DETAIL
  */
 export interface DashaPeriodDetail {
   planet: string;
@@ -322,7 +596,7 @@ export interface DashaPeriodDetail {
 }
 
 /**
- * 🔄 DASHA TRANSITION - Referenced in DashaData
+ * 🔄 DASHA TRANSITION
  */
 export interface DashaTransition {
   date: string;
@@ -335,7 +609,7 @@ export interface DashaTransition {
 }
 
 /**
- * 💕 COMPATIBILITY RESULT - Relationship analysis
+ * 💕 COMPATIBILITY RESULT
  */
 export interface CompatibilityResult {
   id: string;
@@ -371,7 +645,7 @@ export interface CompatibilityResult {
 }
 
 /**
- * Individual Compatibility Aspect
+ * 🎯 COMPATIBILITY ASPECT
  */
 export interface CompatibilityAspect {
   score: number;
@@ -383,7 +657,7 @@ export interface CompatibilityAspect {
 }
 
 /**
- * Ashtakoota Analysis for Detailed Compatibility
+ * 🕉️ ASHTAKOOTA ANALYSIS
  */
 export interface AshtakootaAnalysis {
   totalScore: number;
@@ -407,7 +681,7 @@ export interface AshtakootaAnalysis {
 }
 
 /**
- * ⏰ MUHURTA RESULT - Auspicious timing
+ * ⏰ MUHURTA RESULT
  */
 export interface MuhurtaResult {
   id: string;
@@ -442,7 +716,7 @@ export interface MuhurtaResult {
 }
 
 /**
- * 💡 CHART INSIGHT - Individual chart interpretation
+ * 💡 CHART INSIGHT
  */
 export interface ChartInsight {
   id: string;
@@ -466,7 +740,7 @@ export interface ChartInsight {
 }
 
 /**
- * 📋 CHART SUMMARY - Quick overview
+ * 📋 CHART SUMMARY
  */
 export interface ChartSummary {
   sunSign: string;
@@ -484,7 +758,7 @@ export interface ChartSummary {
 }
 
 /**
- * 👤 BIRTH PROFILE DATA - User profile information
+ * 👤 BIRTH PROFILE DATA
  */
 export interface BirthProfileData {
   firstName: string;
@@ -498,10 +772,45 @@ export interface BirthProfileData {
   notes?: string;
 }
 
-// ================ ADDITIONAL SUPPORTING TYPES ================
+// ================ COMPLETE ANALYSIS RESPONSE ================
 
 /**
- * Chart Calculation Parameters
+ * 🌟 COMPLETE ANALYSIS RESPONSE
+ */
+export interface CompleteAnalysisResponse {
+  personalizedMessage: PersonalizedMessage;
+  birthChart: BirthChartResponse;
+  yogaAnalysis: YogaAnalysisResponse;
+  dashaAnalysis: DashaAnalysisResponse;
+  remedialRecommendations: RemedialRecommendationsResponse;
+  currentTransits: TransitResponse[];
+  lifeAreaInfluences: LifeAreaInfluence[];
+  userStats: AstrologyUserStats;
+  analysisTimestamp: string;
+  analysisId?: string;
+   personalInfo?: PersonalInfo;
+  houseAnalysis?: HouseAnalysis[];
+  
+  
+  // Additional properties from controller
+  rareYogas?: RareYoga[];
+  dashaTable?: DashaEntry[];
+  personalizedRemedies?: PersonalizedRemedy[];
+  siderealPositions?: Record<string, number>;
+  sunSign?: string;
+  moonSign?: string;
+  ascendantSign?: string;
+  dominantPlanet?: string;
+  elementAnalysis?: Record<string, any>;
+  uniquenessHighlight?: string;
+  status?: string;
+  message?: string;
+}
+
+// ================ UTILITY INTERFACES ================
+
+/**
+ * 📊 CHART CALCULATION PARAMETERS
  */
 export interface ChartCalculationParams {
   birthData: BirthData;
@@ -514,7 +823,7 @@ export interface ChartCalculationParams {
 }
 
 /**
- * User Preferences for Analysis
+ * ⚙️ USER ANALYSIS PREFERENCES
  */
 export interface UserAnalysisPreferences {
   preferredLanguage: 'english' | 'hindi' | 'sanskrit';
@@ -526,12 +835,12 @@ export interface UserAnalysisPreferences {
 }
 
 /**
- * Life Areas for Focus
+ * 🎯 LIFE AREA TYPE
  */
 export type LifeArea = 'career' | 'relationships' | 'health' | 'wealth' | 'education' | 'family' | 'spiritual' | 'travel';
 
 /**
- * Notification Preferences
+ * 🔔 NOTIFICATION PREFERENCE
  */
 export interface NotificationPreference {
   type: 'transit_alerts' | 'dasha_changes' | 'auspicious_times' | 'remedy_reminders';
@@ -540,7 +849,7 @@ export interface NotificationPreference {
 }
 
 /**
- * API Response Wrapper
+ * 🌐 API RESPONSE WRAPPER
  */
 export interface ApiResponse<T> {
   success: boolean;
@@ -552,7 +861,7 @@ export interface ApiResponse<T> {
 }
 
 /**
- * Error Types for Better Error Handling
+ * ❌ ASTROLOGY SERVICE ERROR
  */
 export interface AstrologyServiceError {
   code: string;
@@ -562,7 +871,7 @@ export interface AstrologyServiceError {
 }
 
 /**
- * Extended User Preferences
+ * ⚙️ EXTENDED USER PREFERENCES
  */
 export interface ExtendedUserPreferences extends UserAnalysisPreferences {
   chartStyle: 'traditional' | 'modern' | 'simplified';
@@ -575,7 +884,7 @@ export interface ExtendedUserPreferences extends UserAnalysisPreferences {
 }
 
 /**
- * Service Status Information
+ * 📈 SERVICE STATUS INFORMATION
  */
 export interface ServiceStatus {
   isHealthy: boolean;
@@ -592,7 +901,7 @@ export interface ServiceStatus {
 }
 
 /**
- * Analysis Request Base
+ * 📝 ANALYSIS REQUEST BASE
  */
 export interface AnalysisRequestBase {
   requestId?: string;
@@ -604,7 +913,7 @@ export interface AnalysisRequestBase {
 }
 
 /**
- * Batch Analysis Request
+ * 📦 BATCH ANALYSIS REQUEST
  */
 export interface BatchAnalysisRequest extends AnalysisRequestBase {
   charts: string[];
@@ -613,7 +922,7 @@ export interface BatchAnalysisRequest extends AnalysisRequestBase {
 }
 
 /**
- * Export Options
+ * 📤 EXPORT OPTIONS
  */
 export interface ExportOptions {
   format: 'json' | 'pdf' | 'csv' | 'xml';
@@ -627,11 +936,11 @@ export interface ExportOptions {
 // ================ ENUMS ================
 
 /**
- * Chart Types
+ * 📊 CHART TYPES
  */
 export enum ChartType {
   NATAL = 'natal',
-  NAVAMSA = 'navamsa', 
+  NAVAMSA = 'navamsa',
   DASHAMSA = 'dashamsa',
   TRANSIT = 'transit',
   SOLAR_RETURN = 'solar_return',
@@ -639,7 +948,7 @@ export enum ChartType {
 }
 
 /**
- * Planet Names
+ * 🪐 PLANET NAMES
  */
 export enum Planet {
   SUN = 'Sun',
@@ -654,7 +963,7 @@ export enum Planet {
 }
 
 /**
- * Zodiac Signs
+ * ♈ ZODIAC SIGNS
  */
 export enum ZodiacSign {
   ARIES = 'Aries',
@@ -672,7 +981,7 @@ export enum ZodiacSign {
 }
 
 /**
- * House Numbers
+ * 🏠 HOUSE NUMBERS
  */
 export enum House {
   FIRST = 1,
@@ -688,6 +997,63 @@ export enum House {
   ELEVENTH = 11,
   TWELFTH = 12
 }
+
+// ================ TYPE DEFINITIONS ================
+
+export type PlanetName = 'Sun' | 'Moon' | 'Mercury' | 'Venus' | 'Mars' | 'Jupiter' | 'Saturn' | 'Rahu' | 'Ketu';
+
+export type SignName = 'Aries' | 'Taurus' | 'Gemini' | 'Cancer' | 'Leo' | 'Virgo' | 
+                      'Libra' | 'Scorpio' | 'Sagittarius' | 'Capricorn' | 'Aquarius' | 'Pisces';
+
+export type HouseNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+
+export type AnalysisType = 'yoga' | 'dasha' | 'compatibility' | 'transit' | 'remedial' | 'muhurta' | 'prashna';
+
+export type ChartSystemType = 'Vedic' | 'Western' | 'Chinese' | 'Mayan';
+
+export type TimeUnitType = 'seconds' | 'minutes' | 'hours' | 'days' | 'months' | 'years';
+
+// ================ UTILITY TYPES ================
+
+export type PartialBirthData = Partial<BirthData>;
+export type PartialUserPreferences = Partial<UserAnalysisPreferences>;
+export type RequiredBirthData = Required<Pick<BirthData, 'birthDateTime' | 'birthLatitude' | 'birthLongitude'>>;
+
+// ================ CONSTANTS ================
+
+export const PLANET_COLORS: { [key in PlanetName]: string } = {
+  'Sun': '#FF6B35',
+  'Moon': '#4A90E2',
+  'Mercury': '#50C878',
+  'Venus': '#FF69B4',
+  'Mars': '#DC143C',
+  'Jupiter': '#FFD700',
+  'Saturn': '#4B0082',
+  'Rahu': '#8B4513',
+  'Ketu': '#708090'
+};
+
+export const SIGN_ELEMENTS: { [key in SignName]: string } = {
+  'Aries': 'Fire', 'Leo': 'Fire', 'Sagittarius': 'Fire',
+  'Taurus': 'Earth', 'Virgo': 'Earth', 'Capricorn': 'Earth',
+  'Gemini': 'Air', 'Libra': 'Air', 'Aquarius': 'Air',
+  'Cancer': 'Water', 'Scorpio': 'Water', 'Pisces': 'Water'
+};
+
+export const HOUSE_MEANINGS: { [key in HouseNumber]: string } = {
+  1: 'Self, Personality, Physical Body',
+  2: 'Wealth, Family, Speech',
+  3: 'Siblings, Communication, Short Journeys',
+  4: 'Home, Mother, Happiness',
+  5: 'Children, Education, Creativity',
+  6: 'Health, Enemies, Service',
+  7: 'Partnership, Marriage, Business',
+  8: 'Longevity, Transformation, Secrets',
+  9: 'Higher Learning, Philosophy, Fortune',
+  10: 'Career, Status, Father',
+  11: 'Gains, Friends, Aspirations',
+  12: 'Loss, Spirituality, Foreign Lands'
+};
 
 // ================ TYPE GUARDS ================
 
@@ -744,66 +1110,64 @@ export function isDashaData(obj: any): obj is DashaData {
          'upcomingTransitions' in obj;
 }
 
-// ================ UTILITY TYPES ================
+/**
+ * Type guard for PersonalizedBirthChartData
+ */
+export function isPersonalizedBirthChartData(obj: any): obj is PersonalizedBirthChartData {
+  return obj && typeof obj === 'object' &&
+         'personalInfo' in obj &&
+         'planetaryPositions' in obj &&
+         'houseAnalysis' in obj &&
+         'ascendantSign' in obj &&
+         'dominantPlanet' in obj;
+}
+
+// ================ VALIDATION HELPERS ================
 
 /**
- * Partial types for updates
+ * Validate birth data completeness
  */
-export type PartialBirthData = Partial<BirthData>;
-export type PartialUserPreferences = Partial<UserAnalysisPreferences>;
+export function validateBirthData(birthData: Partial<BirthData>): birthData is BirthData {
+  return !!(
+    birthData.birthDateTime &&
+    birthData.birthLocation &&
+    typeof birthData.birthLatitude === 'number' &&
+    typeof birthData.birthLongitude === 'number' &&
+    birthData.timezone
+  );
+}
 
 /**
- * Required fields for chart calculation
+ * Check if coordinates are valid
  */
-export type RequiredBirthData = Required<Pick<BirthData, 'birthDateTime' | 'birthLatitude' | 'birthLongitude'>>;
+export function isValidCoordinates(coords: Coordinates): boolean {
+  return coords.lat !== null && coords.lng !== null &&
+         coords.lat >= -90 && coords.lat <= 90 &&
+         coords.lng >= -180 && coords.lng <= 180;
+}
 
-// ================ TYPE UNIONS AND LITERAL TYPES ================
+// ================ DEFAULT VALUES ================
 
-export type PlanetName = 'Sun' | 'Moon' | 'Mercury' | 'Venus' | 'Mars' | 'Jupiter' | 'Saturn' | 'Rahu' | 'Ketu';
-
-export type SignName = 'Aries' | 'Taurus' | 'Gemini' | 'Cancer' | 'Leo' | 'Virgo' | 
-                      'Libra' | 'Scorpio' | 'Sagittarius' | 'Capricorn' | 'Aquarius' | 'Pisces';
-
-export type HouseNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
-
-export type AnalysisType = 'yoga' | 'dasha' | 'compatibility' | 'transit' | 'remedial' | 'muhurta' | 'prashna';
-
-export type ChartSystemType = 'Vedic' | 'Western' | 'Chinese' | 'Mayan';
-
-export type TimeUnitType = 'seconds' | 'minutes' | 'hours' | 'days' | 'months' | 'years';
-
-// ================ CONSTANTS AND ENUMS ================
-
-export const PLANET_COLORS: { [key in PlanetName]: string } = {
-  'Sun': '#FF6B35',
-  'Moon': '#4A90E2',
-  'Mercury': '#50C878',
-  'Venus': '#FF69B4',
-  'Mars': '#DC143C',
-  'Jupiter': '#FFD700',
-  'Saturn': '#4B0082',
-  'Rahu': '#8B4513',
-  'Ketu': '#708090'
+export const DEFAULT_BIRTH_DATA: Partial<BirthData> = {
+  birthLocation: '',
+  timezone: 'UTC'
 };
 
-export const SIGN_ELEMENTS: { [key in SignName]: string } = {
-  'Aries': 'Fire', 'Leo': 'Fire', 'Sagittarius': 'Fire',
-  'Taurus': 'Earth', 'Virgo': 'Earth', 'Capricorn': 'Earth',
-  'Gemini': 'Air', 'Libra': 'Air', 'Aquarius': 'Air',
-  'Cancer': 'Water', 'Scorpio': 'Water', 'Pisces': 'Water'
+export const DEFAULT_USER_PREFERENCES: UserAnalysisPreferences = {
+  preferredLanguage: 'english',
+  analysisDepth: 'intermediate',
+  includeRemedies: true,
+  includePredictions: true,
+  focusAreas: ['career', 'relationships', 'health'],
+  notificationPreferences: []
 };
 
-export const HOUSE_MEANINGS: { [key in HouseNumber]: string } = {
-  1: 'Self, Personality, Physical Body',
-  2: 'Wealth, Family, Speech',
-  3: 'Siblings, Communication, Short Journeys',
-  4: 'Home, Mother, Happiness',
-  5: 'Children, Education, Creativity',
-  6: 'Health, Enemies, Service',
-  7: 'Partnership, Marriage, Business',
-  8: 'Longevity, Transformation, Secrets',
-  9: 'Higher Learning, Philosophy, Fortune',
-  10: 'Career, Status, Father',
-  11: 'Gains, Friends, Aspirations',
-  12: 'Loss, Spirituality, Foreign Lands'
+// ================ EXPORT DEFAULT ================
+
+export default {
+  PLANET_COLORS,
+  SIGN_ELEMENTS,
+  HOUSE_MEANINGS,
+  DEFAULT_BIRTH_DATA,
+  DEFAULT_USER_PREFERENCES
 };

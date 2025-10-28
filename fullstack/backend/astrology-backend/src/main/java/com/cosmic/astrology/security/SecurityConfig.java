@@ -1,4 +1,3 @@
-
 package com.cosmic.astrology.security;
 
 import com.cosmic.astrology.security.JwtAuthenticationEntryPoint;
@@ -6,6 +5,7 @@ import com.cosmic.astrology.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -22,6 +22,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -57,42 +58,74 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // CORS Configuration Bean
+    // ✅ Enhanced CORS Configuration
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8081"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+        
+        // ✅ Allow multiple origins for development
+        configuration.setAllowedOriginPatterns(Arrays.asList(
+            "http://localhost:8081",
+            "http://localhost:3000",
+            "http://127.0.0.1:8081"
+        ));
+        
+        // ✅ Allow all HTTP methods including OPTIONS for preflight
+        configuration.setAllowedMethods(Arrays.asList(
+            "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"
+        ));
+        
+        // ✅ Allow all headers
+        configuration.setAllowedHeaders(Collections.singletonList("*"));
+        
+        // ✅ Allow credentials for authentication
         configuration.setAllowCredentials(true);
         
+        // ✅ Cache preflight response for 1 hour
+        configuration.setMaxAge(3600L);
+        
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/**", configuration);
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 
-    
+    // ✅ Enhanced Security Filter Chain
    @Bean
 public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http.cors() // Enable CORS - This is crucial!
-            .and()
-            .csrf().disable()
-            .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
-            .and()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .authorizeHttpRequests(authz -> authz
-                    .requestMatchers("/api/auth/**").permitAll()
-                    .requestMatchers("/api/test/**").permitAll()
-                    // ✅ ADD THIS LINE: Allow birth chart endpoints for development
-                    .requestMatchers("/api/birth-chart/**").permitAll()
-                    .anyRequest().authenticated()
-            );
+    http
+        // ✅ CORS configuration first
+        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+        
+        // ✅ Disable CSRF for REST API
+        .csrf(csrf -> csrf.disable())
+        
+        // ✅ CRITICAL: Configure authorization BEFORE adding JWT filter
+        .authorizeHttpRequests(authz -> authz
+            // Allow OPTIONS for CORS preflight
+            .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+            
+            // ✅ CRITICAL: Allow birth chart endpoints WITHOUT authentication
+            .requestMatchers("/api/birth-chart/**").permitAll()
+            
+            // Allow auth endpoints
+            .requestMatchers("/api/auth/**").permitAll()
+            .requestMatchers("/api/test/**").permitAll()
+            
+            // All other requests require authentication
+            .anyRequest().authenticated()
+        )
+        
+        // ✅ Configure exception handling
+        .exceptionHandling(exception -> 
+            exception.authenticationEntryPoint(unauthorizedHandler))
+        
+        // ✅ Stateless session management
+        .sessionManagement(session -> 
+            session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-    http.authenticationProvider(authenticationProvider());
+    // ✅ Add JWT filter AFTER authorization configuration
     http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-
+    
     return http.build();
 }
-
 }

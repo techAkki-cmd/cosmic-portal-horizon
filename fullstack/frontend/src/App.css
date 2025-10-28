@@ -40,3 +40,38 @@
 .read-the-docs {
   color: #888;
 }
+/* Add this to your CSS file or component styles */
+.tab-container {
+  position: relative;
+  z-index: 100;
+}
+
+.tab-container button {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.tab-container button:hover {
+  transform: scale(1.05);
+}
+
+.tab-container button:active {
+  transform: scale(0.95);
+}
+
+/* Prevent any overlays from blocking clicks */
+.cosmic-background,
+.backdrop-blur-sm {
+  pointer-events: none !important;
+}
+
+/* Ensure tab content doesn't interfere */
+.tab-content {
+  pointer-events: auto;
+  position: relative;
+  z-index: 10;
+}

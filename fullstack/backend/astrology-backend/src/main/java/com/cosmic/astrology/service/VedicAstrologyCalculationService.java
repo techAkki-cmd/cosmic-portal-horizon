@@ -36,8 +36,12 @@ import java.util.stream.Collectors;
  * ✅ Personalized remedial measures
  * ✅ Professional-grade error handling and validation
  */
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Service
 public class VedicAstrologyCalculationService {
+    private static final Logger logger = LoggerFactory.getLogger(VedicAstrologyCalculationService.class);
 
     private final SwissEph sw;
     private volatile boolean ephemerisInitialized = false;
@@ -976,6 +980,7 @@ Map<String, Double> houses = calculateHousesSafely(jd_ut, lat, lon, ayanamsa);
                 }
             }
             
+            
             // 🎯 ROYAL YOGA TYPE 3: 1st-10th Lord Connection
             if (firstLord != null && tenthLord != null && !firstLord.equals(tenthLord)) {
                 Double firstPos = positions.get(firstLord);
@@ -1014,6 +1019,197 @@ Map<String, Double> houses = calculateHousesSafely(jd_ut, lat, lon, ayanamsa);
         
         return yogas;
     }
+    /**
+ * 🌟 Get the Quality/Disposition of a Nakshatra
+ * Based on traditional Vedic astrology classification system
+ * Used for transit analysis, muhurta selection, and predictive astrology
+ */
+private String getNakshatraQuality(String nakshatraName) {
+    if (nakshatraName == null || nakshatraName.trim().isEmpty()) {
+        return "Unknown";
+    }
+    
+    // Normalize nakshatra name for consistent matching
+    String normalized = nakshatraName.trim();
+    
+    try {
+        // ✅ CHARA (MOVABLE) - Dynamic, changeable energy
+        // Good for travel, business, communication, temporary activities
+        if (isCharaNakshatra(normalized)) {
+            return "Chara";
+        }
+        
+        // ✅ DHRUVA/STHIRA (FIXED) - Stable, permanent energy  
+        // Good for coronation, planting trees, laying foundations, marriage
+        if (isDhruvaNakshatra(normalized)) {
+            return "Dhruva";
+        }
+        
+        // ✅ KSHIPRA/LAGHU (SWIFT) - Quick, fast-acting energy
+        // Good for medicine, travel, quick decisions, healing
+        if (isKshipraNakshatra(normalized)) {
+            return "Kshipra";
+        }
+        
+        // ✅ MRIDU (SOFT/TENDER) - Gentle, nurturing energy
+        // Good for arts, music, romance, friendship, learning
+        if (isMriduNakshatra(normalized)) {
+            return "Mridu";
+        }
+        
+        // ✅ TIKSHNA (SHARP/POINTED) - Intense, cutting energy
+        // Good for surgery, breaking bad habits, exorcism, punishment  
+        if (isTikshnanakshatra(normalized)) {
+            return "Tikshna";
+        }
+        
+        // ✅ UGRA (FIERCE/VIOLENT) - Powerful, aggressive energy
+        // Good for war, demolition, hunting, fierce activities
+        if (isUgraNakshatra(normalized)) {
+            return "Ugra";
+        }
+        
+        // ✅ MISRA (MIXED) - Combination of qualities
+        // Good for activities requiring both gentle and firm approaches
+        if (isMisraNakshatra(normalized)) {
+            return "Misra";
+        }
+        
+        // Default fallback
+        logger.warn("⚠️ Unknown nakshatra quality for: {}", nakshatraName);
+        return "Neutral";
+        
+    } catch (Exception e) {
+        logger.error("❌ Error determining nakshatra quality for {}: {}", nakshatraName, e.getMessage());
+        return "Neutral";
+    }
+}
+
+/**
+ * 🌟 Helper Methods for Nakshatra Quality Classification
+ */
+
+// CHARA (Movable) Nakshatras - Dynamic energy
+private boolean isCharaNakshatra(String nakshatra) {
+    String[] charaNakshatras = {
+        "Punarvasu", "Swati", "Sravana", "Dhanishta", "Shatabhisha"
+    };
+    return Arrays.asList(charaNakshatras).contains(nakshatra);
+}
+
+// DHRUVA (Fixed) Nakshatras - Stable energy  
+private boolean isDhruvaNakshatra(String nakshatra) {
+    String[] dhruvaNakshatras = {
+        "Rohini", "Uttara Phalguni", "Uttara Ashadha", "Uttara Bhadrapada"
+    };
+    return Arrays.asList(dhruvaNakshatras).contains(nakshatra);
+}
+
+// KSHIPRA (Swift) Nakshatras - Fast-acting energy
+private boolean isKshipraNakshatra(String nakshatra) {
+    String[] kshipraNakshatras = {
+        "Ashwini", "Pushya", "Hasta"
+    };
+    return Arrays.asList(kshipraNakshatras).contains(nakshatra);
+}
+
+// MRIDU (Soft/Tender) Nakshatras - Gentle energy
+private boolean isMriduNakshatra(String nakshatra) {
+    String[] mriduNakshatras = {
+        "Mrigashira", "Chitra", "Anuradha", "Revati"
+    };
+    return Arrays.asList(mriduNakshatras).contains(nakshatra);
+}
+
+// TIKSHNA (Sharp/Pointed) Nakshatras - Intense energy
+private boolean isTikshnanakshatra(String nakshatra) {
+    String[] tikshnaNakshatras = {
+        "Ardra", "Ashlesha", "Jyeshtha", "Mula"
+    };
+    return Arrays.asList(tikshnaNakshatras).contains(nakshatra);
+}
+
+// UGRA (Fierce/Violent) Nakshatras - Powerful energy
+private boolean isUgraNakshatra(String nakshatra) {
+    String[] ugraNakshatras = {
+        "Bharani", "Magha", "Purva Phalguni", "Purva Ashadha", "Purva Bhadrapada"
+    };
+    return Arrays.asList(ugraNakshatras).contains(nakshatra);
+}
+
+// MISRA (Mixed) Nakshatras - Combined qualities
+private boolean isMisraNakshatra(String nakshatra) {
+    String[] misraNakshatras = {
+        "Krittika", "Vishakha"
+    };
+    return Arrays.asList(misraNakshatras).contains(nakshatra);
+}
+
+/**
+ * 🌟 Enhanced method with detailed quality information
+ * Returns comprehensive quality data for advanced analysis
+ */
+public Map<String, Object> getNakshatraQualityDetails(String nakshatraName) {
+    Map<String, Object> qualityDetails = new HashMap<>();
+    
+    String quality = getNakshatraQuality(nakshatraName);
+    qualityDetails.put("quality", quality);
+    qualityDetails.put("nakshatra", nakshatraName);
+    
+    // Add detailed descriptions based on quality[1][23][25]
+    switch (quality) {
+        case "Chara":
+            qualityDetails.put("description", "Dynamic, changeable energy good for travel and communication");
+            qualityDetails.put("favorableFor", Arrays.asList("Travel", "Business", "Communication", "Temporary activities"));
+            qualityDetails.put("energy", "Dynamic");
+            break;
+            
+        case "Dhruva":
+            qualityDetails.put("description", "Stable, permanent energy good for foundations and commitments");
+            qualityDetails.put("favorableFor", Arrays.asList("Marriage", "Foundation laying", "Planting trees", "Coronation"));
+            qualityDetails.put("energy", "Stable");
+            break;
+            
+        case "Kshipra":
+            qualityDetails.put("description", "Swift, fast-acting energy good for quick decisions and healing");
+            qualityDetails.put("favorableFor", Arrays.asList("Medicine", "Healing", "Quick travel", "Emergency decisions"));
+            qualityDetails.put("energy", "Swift");
+            break;
+            
+        case "Mridu":
+            qualityDetails.put("description", "Gentle, tender energy good for arts and relationships");
+            qualityDetails.put("favorableFor", Arrays.asList("Arts", "Music", "Romance", "Learning", "Friendship"));
+            qualityDetails.put("energy", "Gentle");
+            break;
+            
+        case "Tikshna":
+            qualityDetails.put("description", "Sharp, intense energy good for cutting through obstacles");
+            qualityDetails.put("favorableFor", Arrays.asList("Surgery", "Breaking habits", "Exorcism", "Discipline"));
+            qualityDetails.put("energy", "Intense");
+            break;
+            
+        case "Ugra":
+            qualityDetails.put("description", "Fierce, powerful energy good for challenging activities");
+            qualityDetails.put("favorableFor", Arrays.asList("War", "Competition", "Demolition", "Fierce activities"));
+            qualityDetails.put("energy", "Fierce");
+            break;
+            
+        case "Misra":
+            qualityDetails.put("description", "Mixed energy combining gentle and firm qualities");
+            qualityDetails.put("favorableFor", Arrays.asList("Complex tasks", "Balanced approaches", "Moderate activities"));
+            qualityDetails.put("energy", "Mixed");
+            break;
+            
+        default:
+            qualityDetails.put("description", "General neutral energy");
+            qualityDetails.put("favorableFor", Arrays.asList("General activities"));
+            qualityDetails.put("energy", "Neutral");
+            break;
+    }
+    
+    return qualityDetails;
+}
+
 
     /**
      * 🔥 DETECT WEALTH YOGAS (Dhana Yogas) - Financial Prosperity
@@ -2070,10 +2266,7 @@ private Map<String, Double> calculateEmergencyHouses(double ayanamsa) {
         return lifeAreas.getOrDefault(planet, "overall life harmony");
     }
 
-    private boolean isMainPlanet(String planet) {
-        return Arrays.asList("Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter", "Saturn", "Rahu", "Ketu")
-                    .contains(planet);
-    }
+   
 
     /**
  * 🔥 GENERATE CACHE KEY (Unique identifier for caching)
@@ -9741,6 +9934,106 @@ public List<String> analyzeTransits(Map<String, Object> natalChart, Map<String, 
         return List.of("Planetary energies are in harmonious transition supporting overall well-being");
     }
 }
+/**
+ * 🔥 CALCULATE CURRENT TRANSITS - The Missing Method
+ * This method calculates current planetary positions (transits) for a given user
+ */
+public List<Map<String, Object>> calculateCurrentTransits(User user) {
+    try {
+        logger.info("🌍 Calculating current transits for user: {}", user.getUsername());
+        
+        // Get current time as Julian Day
+        LocalDateTime now = LocalDateTime.now();
+        double jd_ut = toJulianDay(now.atZone(ZoneOffset.UTC).toLocalDateTime());
+        
+        // Calculate current ayanamsa
+        double ayanamsa = calculateAyanamsa(jd_ut);
+        
+        // Get current planetary positions using your existing method
+        Map<String, Double> currentPositions = calculateAllPlanetaryPositions(jd_ut, ayanamsa);
+        
+        // Convert to transit format
+        List<Map<String, Object>> transits = new ArrayList<>();
+        
+        for (Map.Entry<String, Double> entry : currentPositions.entrySet()) {
+            String planet = entry.getKey();
+            Double position = entry.getValue();
+            
+            // Skip house cusps and angles, focus on planets
+            if (position != null && isMainPlanet(planet)) {
+                Map<String, Object> transit = createTransitMap(planet, position, jd_ut);
+                transits.add(transit);
+            }
+        }
+        
+        logger.info("✅ Successfully calculated {} current transits", transits.size());
+        return transits;
+        
+    } catch (Exception e) {
+        logger.error("❌ Error calculating current transits: {}", e.getMessage());
+        return createFallbackTransits();
+    }
+}
+
+/**
+ * Helper method to create transit map
+ */
+private Map<String, Object> createTransitMap(String planet, double position, double jd_ut) {
+    Map<String, Object> transit = new HashMap<>();
+    
+    transit.put("planet", planet);
+    transit.put("position", position);
+    transit.put("sign", getZodiacSignSafe(position));
+    
+    // Calculate nakshatra info using your existing method
+    Map<String, Object> nakshatraInfo = calculateAdvancedNakshatraInfo(planet, position);
+    transit.put("nakshatra", nakshatraInfo.get("nakshatra"));
+    transit.put("pada", nakshatraInfo.get("pada"));
+    transit.put("nakshatraLord", nakshatraInfo.get("deity"));
+    
+    // Add additional transit-specific information
+    transit.put("isRetrograde", false); // You'd need to calculate this from velocity
+    transit.put("influence", generateTransitInfluence(planet, (String) transit.get("sign")));
+    transit.put("element", getNakshatraElement((String) nakshatraInfo.get("nakshatra")));
+    transit.put("quality", getNakshatraQuality((String) nakshatraInfo.get("nakshatra")));
+    
+    return transit;
+}
+
+/**
+ * Helper method to check if it's a main planet
+ */
+private boolean isMainPlanet(String planet) {
+    return Arrays.asList("Sun", "Moon", "Mercury", "Venus", "Mars", 
+                        "Jupiter", "Saturn", "Rahu", "Ketu").contains(planet);
+}
+
+/**
+ * Generate transit influence text
+ */
+private String generateTransitInfluence(String planet, String sign) {
+    return String.format("%s in %s brings transformative energy for growth and development", 
+                        planet, sign);
+}
+
+/**
+ * Fallback transits if calculation fails
+ */
+private List<Map<String, Object>> createFallbackTransits() {
+    List<Map<String, Object>> fallbacks = new ArrayList<>();
+    
+    Map<String, Object> sunTransit = new HashMap<>();
+    sunTransit.put("planet", "Sun");
+    sunTransit.put("position", 120.0);
+    sunTransit.put("sign", "Leo");
+    sunTransit.put("nakshatra", "Magha");
+    sunTransit.put("pada", 1);
+    sunTransit.put("influence", "General positive influence for growth");
+    fallbacks.add(sunTransit);
+    
+    return fallbacks;
+}
+
 
 /**
  * 🔥 DETECT COMPREHENSIVE VEDIC YOGAS

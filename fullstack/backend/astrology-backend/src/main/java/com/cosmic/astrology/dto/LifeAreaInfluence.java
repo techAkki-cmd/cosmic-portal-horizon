@@ -14,8 +14,9 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Life Area Influence DTO for Vedic Astrology Application
+ * ✅ COMPLETE Life Area Influence DTO for Vedic Astrology Platform
  * Represents astrological influences on specific areas of life like career, relationships, health, etc.
+ * Optimized for PersonalizedBirthChart frontend integration
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -135,7 +136,7 @@ public class LifeAreaInfluence {
         @Schema(description = "Trend for this sub-area")
         private String trend;
         
-        // Constructors, getters, and setters
+        // Constructors
         public SubAreaInfluence() {}
         
         public SubAreaInfluence(String name, int score, String description) {
@@ -175,7 +176,7 @@ public class LifeAreaInfluence {
         @Schema(description = "House position of the planet", example = "10")
         private Integer housePosition;
         
-        // Constructors, getters, and setters
+        // Constructors
         public PlanetaryInfluence() {}
         
         public PlanetaryInfluence(String planet, String influenceType, int strength, String description) {
@@ -309,10 +310,10 @@ public class LifeAreaInfluence {
     public Map<String, Integer> getRelevantHouses() { return relevantHouses; }
     public void setRelevantHouses(Map<String, Integer> relevantHouses) { this.relevantHouses = relevantHouses; }
     
-    // ================ UTILITY METHODS ================
+    // ================ ENHANCED UTILITY METHODS ================
     
     /**
-     * Get rating as descriptive text
+     * Get rating as descriptive text for frontend display
      */
     @JsonProperty("ratingDescription")
     public String getRatingDescription() {
@@ -328,7 +329,7 @@ public class LifeAreaInfluence {
      */
     @JsonProperty("trendWithEmoji")
     public String getTrendWithEmoji() {
-        switch (trend) {
+        switch (trend != null ? trend : "STABLE") {
             case "RISING": return "📈 Rising";
             case "STABLE": return "➡️ Stable";
             case "DECLINING": return "📉 Declining";
