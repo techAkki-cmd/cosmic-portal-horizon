@@ -15,10 +15,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
-/**
- * Comprehensive User Entity for Vedic Astrology Application
- * Includes authentication, birth data, chart calculations, and audit fields
- */
+
 @Entity
 @Table(name = "users", indexes = {
     @Index(name = "idx_username", columnList = "username"),
@@ -35,7 +32,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    // ================ AUTHENTICATION FIELDS ================
     
     @NotBlank(message = "Username is required")
     @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
@@ -56,17 +52,14 @@ public class User {
     @Column(nullable = false, length = 20)
     private UserRole role = UserRole.CLIENT;
     
-    // ✅ FIXED: Changed from primitive boolean to Boolean wrapper
     @Column(name = "enabled", nullable = false)
     private Boolean enabled = true;
     
-    // ✅ FIXED: Changed from primitive boolean to Boolean wrapper
     @Column(name = "email_verified", nullable = false)
     private Boolean emailVerified = false;
     
     private LocalDateTime emailVerifiedAt;
     
-    // ================ PERSONAL INFORMATION ================
     
     @Size(max = 50, message = "First name cannot exceed 50 characters")
     @Column(length = 50)
@@ -81,7 +74,7 @@ public class User {
     private String phoneNumber;
     
     @Column(length = 10)
-    private String gender; // Male, Female, Other
+    private String gender; 
     
     @Column(length = 100)
     private String occupation;
@@ -89,7 +82,6 @@ public class User {
     @Column(length = 100)
     private String nationality;
 
-    // ================ MISSING FIELDS - ADDED ================
     
     @Size(max = 100, message = "Display name cannot exceed 100 characters")
     @Column(name = "display_name", length = 100)
@@ -103,19 +95,16 @@ public class User {
     @Column(name = "initials", length = 10)
     private String initials;
 
-    // ✅ FIXED: Changed from primitive boolean to Boolean wrapper
     @Column(name = "account_locked", nullable = false)
     private Boolean accountLocked = false;
 
     @Column(name = "days_since_last_login")
     private Long daysSinceLastLogin;
 
-    // ✅ FIXED: Changed from primitive boolean to Boolean wrapper
     @Column(name = "has_active_subscription", nullable = false)
     private Boolean hasActiveSubscription = false;
 
-    // Profile picture fields
-    @Column(length = 500)
+z    @Column(length = 500)
     private String profilePictureUrl;
 
     @Column(length = 100)
@@ -127,7 +116,6 @@ public class User {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime profilePictureUploadedAt;
     
-    // ================ BIRTH INFORMATION (VEDIC ASTROLOGY) ================
     
     private LocalDateTime birthDateTime;
     
@@ -145,7 +133,6 @@ public class User {
     @Column(length = 50)
     private String timezone;
     
-    // Additional birth details
     @Column(length = 100)
     private String birthCity;
     
@@ -155,7 +142,6 @@ public class User {
     @Column(length = 100)
     private String birthCountry;
     
-    // ================ CALCULATED ASTROLOGY DATA ================
     
     @Column(length = 30)
     private String sunSign;
@@ -167,10 +153,10 @@ public class User {
     private String risingSign;
     
     @Column(length = 30)
-    private String lagnaSign; // Alias for rising sign in Vedic
+    private String lagnaSign; 
     
     @Column(length = 20)
-    private String dominantElement; // Fire, Earth, Air, Water
+    private String dominantElement; 
     
     @Column(length = 50)
     private String moonNakshatra;
@@ -180,52 +166,45 @@ public class User {
     @Column(name = "ayanamsa", columnDefinition = "DECIMAL(8,4)")
     private Double ayanamsa;
     
-    // Cached natal chart data
     @Lob
     @Column(columnDefinition = "TEXT")
-    private String natalChart; // JSON of calculated planetary positions
+    private String natalChart; /
     
     @Lob
     @Column(columnDefinition = "TEXT")
-    private String natalHouses; // JSON of house positions
+    private String natalHouses;
     
     @Lob
     @Column(columnDefinition = "TEXT")
-    private String natalAspects; // JSON of planetary aspects
+    private String natalAspects; 
     
     private LocalDateTime chartCalculatedAt;
     
-    // ✅ FIXED: Changed from primitive boolean to Boolean wrapper
     @Column(name = "chart_calculated", nullable = false)
     private Boolean chartCalculated = false;
     
     @Column(length = 50)
-    private String calculationAccuracy; // Swiss Ephemeris, Mathematical, etc.
+    private String calculationAccuracy; 
     
-    // ================ USER PREFERENCES ================
     
     @Column(length = 20)
     private String preferredLanguage = "en";
     
     @Column(length = 10)
-    private String timeFormat = "12h"; // 12h or 24h
+    private String timeFormat = "12h"; 
     
     @Column(length = 10)
     private String dateFormat = "MM/dd/yyyy";
     
-    // ✅ FIXED: Changed from primitive boolean to Boolean wrapper
     @Column(name = "email_notifications", nullable = false)
     private Boolean emailNotifications = true;
     
-    // ✅ FIXED: Changed from primitive boolean to Boolean wrapper
     @Column(name = "daily_horoscope", nullable = false)
     private Boolean dailyHoroscope = true;
     
-    // ✅ FIXED: Changed from primitive boolean to Boolean wrapper
     @Column(name = "transit_alerts", nullable = false)
     private Boolean transitAlerts = true;
     
-    // ================ STATISTICS AND TRACKING ================
     
     @Column(nullable = false)
     private Integer chartsGenerated = 0;
@@ -240,7 +219,6 @@ public class User {
     
     private Integer reportsGenerated = 0;
     
-    // ================ SECURITY AND AUDIT FIELDS ================
     
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -267,35 +245,29 @@ public class User {
     
     private LocalDateTime accountUnlockedAt;
     
-    // ================ SUBSCRIPTION AND BILLING ================
     
     @Column(length = 20)
-    private String subscriptionType = "FREE"; // FREE, BASIC, PREMIUM, PROFESSIONAL
+    private String subscriptionType = "FREE"; 
     
     private LocalDateTime subscriptionStartDate;
     
     private LocalDateTime subscriptionEndDate;
     
-    // ✅ FIXED: Changed from primitive boolean to Boolean wrapper
     @Column(name = "subscription_active", nullable = false)
     private Boolean subscriptionActive = false;
     
     private Integer creditsRemaining = 0;
     
-    // ================ PROFILE COMPLETION ================
     
     @Column(nullable = false)
     private Integer profileCompletionPercentage = 0;
     
-    // ✅ FIXED: Changed from primitive boolean to Boolean wrapper
     @Column(name = "has_complete_birth_data", nullable = false)
     private Boolean hasCompleteBirthData = false;
     
-    // ✅ FIXED: Changed from primitive boolean to Boolean wrapper
     @Column(name = "has_generated_chart", nullable = false)
     private Boolean hasGeneratedChart = false;
     
-    // ================ LIFECYCLE CALLBACKS ================
     
     @PrePersist
     protected void onCreate() {
@@ -313,7 +285,6 @@ public class User {
         updateDynamicFields();
     }
     
-    // ================ CONSTRUCTORS ================
     
     public User() {}
     
@@ -331,7 +302,6 @@ public class User {
         this.lastName = lastName;
     }
     
-    // ================ BASIC GETTERS AND SETTERS ================
     
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -349,7 +319,6 @@ public class User {
     public UserRole getRole() { return role; }
     public void setRole(UserRole role) { this.role = role; }
     
-    // ✅ FIXED: Updated boolean getters/setters to handle Boolean wrapper
     public Boolean getEnabled() { return enabled; }
     public void setEnabled(Boolean enabled) { 
         this.enabled = enabled != null ? enabled : true;
@@ -387,7 +356,6 @@ public class User {
     public String getNationality() { return nationality; }
     public void setNationality(String nationality) { this.nationality = nationality; }
     
-    // ================ ENHANCED FIELDS GETTERS/SETTERS ================
     
     public String getDisplayName() { 
         if (displayName != null && !displayName.trim().isEmpty()) {
@@ -429,7 +397,6 @@ public class User {
         this.initials = initials != null ? initials.trim().toUpperCase() : null;
     }
 
-    // ✅ FIXED: Updated boolean getters/setters for accountLocked
     public Boolean getAccountLocked() { return accountLocked; }
     public void setAccountLocked(Boolean accountLocked) { 
         this.accountLocked = accountLocked != null ? accountLocked : false;
@@ -452,7 +419,6 @@ public class User {
         this.daysSinceLastLogin = daysSinceLastLogin;
     }
 
-    // ✅ FIXED: Updated boolean getters/setters for hasActiveSubscription
     public Boolean getHasActiveSubscription() { return hasActiveSubscription; }
     public void setHasActiveSubscription(Boolean hasActiveSubscription) { 
         this.hasActiveSubscription = hasActiveSubscription != null ? hasActiveSubscription : false;
@@ -463,7 +429,6 @@ public class User {
                subscriptionEndDate.isAfter(LocalDateTime.now());
     }
     
-    // Profile picture getters/setters
     public String getProfilePictureUrl() { return profilePictureUrl; }
     public void setProfilePictureUrl(String profilePictureUrl) { this.profilePictureUrl = profilePictureUrl; }
     
@@ -476,7 +441,6 @@ public class User {
     public LocalDateTime getProfilePictureUploadedAt() { return profilePictureUploadedAt; }
     public void setProfilePictureUploadedAt(LocalDateTime profilePictureUploadedAt) { this.profilePictureUploadedAt = profilePictureUploadedAt; }
     
-    // ================ BIRTH DATA GETTERS/SETTERS ================
     
     public LocalDateTime getBirthDateTime() { return birthDateTime; }
     public void setBirthDateTime(LocalDateTime birthDateTime) { this.birthDateTime = birthDateTime; }
@@ -502,7 +466,6 @@ public class User {
     public String getBirthCountry() { return birthCountry; }
     public void setBirthCountry(String birthCountry) { this.birthCountry = birthCountry; }
     
-    // ================ ASTROLOGY DATA GETTERS/SETTERS ================
     
     public String getSunSign() { return sunSign; }
     public void setSunSign(String sunSign) { this.sunSign = sunSign; }
@@ -540,7 +503,6 @@ public class User {
     public LocalDateTime getChartCalculatedAt() { return chartCalculatedAt; }
     public void setChartCalculatedAt(LocalDateTime chartCalculatedAt) { this.chartCalculatedAt = chartCalculatedAt; }
     
-    // ✅ FIXED: Updated boolean getters/setters for chartCalculated
     public Boolean getChartCalculated() { return chartCalculated; }
     public void setChartCalculated(Boolean chartCalculated) { 
         this.chartCalculated = chartCalculated != null ? chartCalculated : false;
@@ -552,7 +514,6 @@ public class User {
     public String getCalculationAccuracy() { return calculationAccuracy; }
     public void setCalculationAccuracy(String calculationAccuracy) { this.calculationAccuracy = calculationAccuracy; }
     
-    // ================ PREFERENCES GETTERS/SETTERS ================
     
     public String getPreferredLanguage() { return preferredLanguage; }
     public void setPreferredLanguage(String preferredLanguage) { this.preferredLanguage = preferredLanguage; }
@@ -563,7 +524,6 @@ public class User {
     public String getDateFormat() { return dateFormat; }
     public void setDateFormat(String dateFormat) { this.dateFormat = dateFormat; }
     
-    // ✅ FIXED: Updated boolean getters/setters for preferences
     public Boolean getEmailNotifications() { return emailNotifications; }
     public void setEmailNotifications(Boolean emailNotifications) { 
         this.emailNotifications = emailNotifications != null ? emailNotifications : true;
@@ -588,7 +548,6 @@ public class User {
         return transitAlerts != null && transitAlerts;
     }
     
-    // ================ STATISTICS GETTERS/SETTERS ================
     
     public Integer getChartsGenerated() { return chartsGenerated; }
     public void setChartsGenerated(Integer chartsGenerated) { this.chartsGenerated = chartsGenerated; }
@@ -605,7 +564,6 @@ public class User {
     public Integer getReportsGenerated() { return reportsGenerated; }
     public void setReportsGenerated(Integer reportsGenerated) { this.reportsGenerated = reportsGenerated; }
     
-    // ================ AUDIT GETTERS/SETTERS ================
     
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
@@ -640,7 +598,6 @@ public class User {
     public LocalDateTime getAccountUnlockedAt() { return accountUnlockedAt; }
     public void setAccountUnlockedAt(LocalDateTime accountUnlockedAt) { this.accountUnlockedAt = accountUnlockedAt; }
     
-    // ================ SUBSCRIPTION GETTERS/SETTERS ================
     
     public String getSubscriptionType() { return subscriptionType; }
     public void setSubscriptionType(String subscriptionType) { this.subscriptionType = subscriptionType; }
@@ -651,7 +608,6 @@ public class User {
     public LocalDateTime getSubscriptionEndDate() { return subscriptionEndDate; }
     public void setSubscriptionEndDate(LocalDateTime subscriptionEndDate) { this.subscriptionEndDate = subscriptionEndDate; }
     
-    // ✅ FIXED: Updated boolean getters/setters for subscriptionActive
     public Boolean getSubscriptionActive() { return subscriptionActive; }
     public void setSubscriptionActive(Boolean subscriptionActive) { 
         this.subscriptionActive = subscriptionActive != null ? subscriptionActive : false;
@@ -663,12 +619,10 @@ public class User {
     public Integer getCreditsRemaining() { return creditsRemaining; }
     public void setCreditsRemaining(Integer creditsRemaining) { this.creditsRemaining = creditsRemaining; }
     
-    // ================ PROFILE COMPLETION GETTERS/SETTERS ================
     
     public Integer getProfileCompletionPercentage() { return profileCompletionPercentage; }
     public void setProfileCompletionPercentage(Integer profileCompletionPercentage) { this.profileCompletionPercentage = profileCompletionPercentage; }
     
-    // ✅ FIXED: Updated boolean getters/setters for hasCompleteBirthData
     public Boolean getHasCompleteBirthData() { return hasCompleteBirthData; }
     public void setHasCompleteBirthData(Boolean hasCompleteBirthData) { 
         this.hasCompleteBirthData = hasCompleteBirthData != null ? hasCompleteBirthData : false;
@@ -677,7 +631,6 @@ public class User {
         return hasCompleteBirthData != null && hasCompleteBirthData;
     }
     
-    // ✅ FIXED: Updated boolean getters/setters for hasGeneratedChart
     public Boolean getHasGeneratedChart() { return hasGeneratedChart; }
     public void setHasGeneratedChart(Boolean hasGeneratedChart) { 
         this.hasGeneratedChart = hasGeneratedChart != null ? hasGeneratedChart : false;
@@ -686,7 +639,6 @@ public class User {
         return hasGeneratedChart != null && hasGeneratedChart;
     }
     
-    // ================ ENHANCED UTILITY METHODS ================
     
     @JsonProperty("fullName")
     public String getFullName() {
@@ -849,7 +801,6 @@ public class User {
         this.failedLoginAttempts = 0;
     }
     
-    // ================ OBJECT METHODS ================
     
     @Override
     public boolean equals(Object obj) {
