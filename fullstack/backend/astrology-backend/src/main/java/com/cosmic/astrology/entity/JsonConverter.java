@@ -10,9 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * JPA Converter for JSON metadata field
- */
+
 @Converter
 @Slf4j
 public class JsonConverter implements AttributeConverter<Map<String, Object>, String> {
