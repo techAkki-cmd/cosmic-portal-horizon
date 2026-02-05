@@ -1,9 +1,6 @@
-// src/main/java/com/cosmic/astrology/exception/UserNotFoundException.java
 package com.cosmic.astrology.exception;
 
-/**
- * Custom exception for when a user is not found in the Cosmic Astrology system
- */
+
 public class UserNotFoundException extends RuntimeException {
     
     private String username;
@@ -42,7 +39,6 @@ public class UserNotFoundException extends RuntimeException {
         return new UserNotFoundException(message);
     }
     
-    // Getters
     public String getUsername() {
         return username;
     }
