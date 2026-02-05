@@ -15,11 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * 🌟 PRODUCTION-READY VEDIC ASTROLOGY SERVICE 
- * Fully integrated with comprehensive VedicAstrologyCalculationService
- * Provides world-class astrological insights matching AstroGuru/AstroTalk standards
- */
+
 @Service
 public class AstrologyService {
     
@@ -36,7 +32,6 @@ public class AstrologyService {
 
     private static final DateTimeFormatter ISO_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
-    // Constants for zodiac signs and nakshatras
     private static final String[] ENGLISH_SIGNS = {
         "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo",
         "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"
@@ -51,11 +46,7 @@ public class AstrologyService {
         "Purva Bhadrapada", "Uttara Bhadrapada", "Revati"
     };
 
-    // ================ ENHANCED PUBLIC API METHODS ================
-
-    /**
-     * ✅ FIXED: Calculate current transits using VedicAstrologyCalculationService
-     */
+   
     public List<Map<String, Object>> calculateCurrentTransits(
             LocalDateTime birthDateTime, 
             Double birthLatitude, 
@@ -65,7 +56,6 @@ public class AstrologyService {
         try {
             logger.info("🔄 Calculating personalized current transits using VedicAstrologyCalculationService for: {}", birthLocation);
             
-            // Create a temporary user object with birth data for calculations
             User tempUser = new User();
             tempUser.setBirthDateTime(birthDateTime);
             tempUser.setBirthLatitude(birthLatitude);
@@ -73,10 +63,8 @@ public class AstrologyService {
             tempUser.setBirthLocation(birthLocation);
             tempUser.setTimezone("Asia/Kolkata"); // Default timezone
             
-            // ✅ USE YOUR EXISTING VEDIC CALCULATION SERVICE
             List<Map<String, Object>> transits = vedicCalculationService.calculateCurrentTransits(tempUser);
             
-            // If your service returns empty, create enhanced fallback
             if (transits == null || transits.isEmpty()) {
                 logger.warn("⚠️ VedicAstrologyCalculationService returned no transits, generating fallback");
                 return createEnhancedFallbackTransits(birthLocation);
@@ -91,9 +79,7 @@ public class AstrologyService {
         }
     }
 
-    /**
-     * 🔥 GENERATE COMPREHENSIVE PERSONALIZED VEDIC MESSAGE
-     */
+   
     public PersonalizedMessageResponse getPersonalizedMessage(String username) {
         try {
             User user = userRepository.findByUsername(username)
@@ -138,9 +124,7 @@ public class AstrologyService {
         }
     }
 
-    /**
-     * 🔥 CALCULATE COMPREHENSIVE VEDIC BIRTH CHART
-     */
+   
     public BirthChartResponse calculateBirthChart(BirthData birthData, String username) {
         try {
             logger.info("🕉️ Calculating comprehensive Vedic birth chart for: {}", username);
@@ -169,9 +153,7 @@ public class AstrologyService {
         }
     }
 
-    /**
-     * ✅ USERNAME-BASED METHOD for authenticated users
-     */
+    
     public List<TransitResponse> getCurrentTransits(String username) {
         try {
             logger.info("🌍 Getting current transits for authenticated user: {}", username);
@@ -198,12 +180,7 @@ public class AstrologyService {
         }
     }
 
-    /**
-     * 🔥 GET COMPREHENSIVE YOGA ANALYSIS
-     */
-    /**
- * 🔥 GET COMPREHENSIVE YOGA ANALYSIS - FIXED
- */
+    
 public YogaAnalysisResponse getYogaAnalysis(String username) {
     try {
         User user = userRepository.findByUsername(username)
@@ -215,7 +192,6 @@ public YogaAnalysisResponse getYogaAnalysis(String username) {
 
         Map<String, Object> vedicChart = getVedicNatalChart(user);
         
-        // ✅ CRITICAL FIX: Extract planetary positions as Map<String, Double>
         Map<String, Double> planetaryPositions = extractPlanetaryPositions(vedicChart);
         
         // Now this will work - correct parameter types
@@ -242,13 +218,11 @@ public YogaAnalysisResponse getYogaAnalysis(String username) {
 }
 
 /**
- * ✅ HELPER METHOD: Extract planetary positions from vedicChart
  */
 private Map<String, Double> extractPlanetaryPositions(Map<String, Object> vedicChart) {
     try {
         Map<String, Double> planetaryPositions = new HashMap<>();
         
-        // ✅ Extract sidereal positions (most common key name)
         Object siderealPositions = vedicChart.get("siderealPositions");
         if (siderealPositions instanceof Map) {
             @SuppressWarnings("unchecked")
@@ -270,7 +244,6 @@ private Map<String, Double> extractPlanetaryPositions(Map<String, Object> vedicC
             }
         }
         
-        // ✅ Fallback: Try other possible keys
         if (planetaryPositions.isEmpty()) {
             // Try "planetaryPositions"
             Object altPositions = vedicChart.get("planetaryPositions");
@@ -286,7 +259,6 @@ private Map<String, Double> extractPlanetaryPositions(Map<String, Object> vedicC
             }
         }
         
-        // ✅ Final fallback: Extract individual planet positions
         if (planetaryPositions.isEmpty()) {
             String[] planets = {"Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter", "Saturn", "Rahu", "Ketu", "Ascendant"};
             
@@ -307,13 +279,10 @@ private Map<String, Double> extractPlanetaryPositions(Map<String, Object> vedicC
     }
 }
 
-/**
- * ✅ FALLBACK: Create basic planetary positions if extraction fails
- */
+
 private Map<String, Double> createFallbackPlanetaryPositions() {
     Map<String, Double> fallbackPositions = new HashMap<>();
     
-    // Basic fallback positions for essential planets
     fallbackPositions.put("Sun", 120.0);      // Leo
     fallbackPositions.put("Moon", 60.0);      // Gemini
     fallbackPositions.put("Mercury", 150.0);  // Virgo
@@ -329,9 +298,7 @@ private Map<String, Double> createFallbackPlanetaryPositions() {
 }
 
 
-    /**
-     * 🔥 GET COMPREHENSIVE DASHA ANALYSIS
-     */
+    
     public DashaAnalysisResponse getDashaAnalysis(String username) {
         try {
             User user = userRepository.findByUsername(username)
@@ -372,9 +339,7 @@ private Map<String, Double> createFallbackPlanetaryPositions() {
         }
     }
 
-    /**
-     * 🔥 GET COMPREHENSIVE REMEDIAL RECOMMENDATIONS
-     */
+   
     public RemedialRecommendationsResponse getRemedialRecommendations(String username) {
         try {
             User user = userRepository.findByUsername(username)
@@ -410,9 +375,7 @@ private Map<String, Double> createFallbackPlanetaryPositions() {
         }
     }
 
-    /**
-     * 🔥 GET COMPREHENSIVE LIFE AREA INFLUENCES
-     */
+    
     public List<LifeAreaInfluence> getLifeAreaInfluences(String username) {
         try {
             User user = userRepository.findByUsername(username)
@@ -446,9 +409,7 @@ private Map<String, Double> createFallbackPlanetaryPositions() {
         }
     }
 
-    /**
-     * 🔥 GET USER'S STORED VEDIC BIRTH CHART
-     */
+   
     public BirthChartResponse getUserBirthChart(String username) {
         try {
             User user = userRepository.findByUsername(username)
@@ -475,9 +436,7 @@ private Map<String, Double> createFallbackPlanetaryPositions() {
         }
     }
 
-    /**
-     * 🔥 GET ENHANCED USER STATISTICS
-     */
+    
     public UserStatsResponse getUserStats(String username) {
         try {
             logger.info("📊 Getting user stats for: {}", username);
@@ -509,9 +468,7 @@ private Map<String, Double> createFallbackPlanetaryPositions() {
 
     // ================ ENHANCED CONVERSION METHODS ================
 
-    /**
-     * ✅ HELPER: Convert Maps to TransitResponse objects
-     */
+    
     private List<TransitResponse> convertMapsToTransitResponses(List<Map<String, Object>> transitMaps) {
         if (transitMaps == null || transitMaps.isEmpty()) {
             return new ArrayList<>();
@@ -523,9 +480,7 @@ private Map<String, Double> createFallbackPlanetaryPositions() {
             .collect(Collectors.toList());
     }
     
-    /**
-     * ✅ HELPER: Convert individual map to TransitResponse
-     */
+    
     private TransitResponse mapToTransitResponse(Map<String, Object> transitMap) {
         try {
             TransitResponse transit = new TransitResponse();
@@ -568,9 +523,7 @@ private Map<String, Double> createFallbackPlanetaryPositions() {
 
     // ================ ENHANCED FALLBACK METHODS ================
     
-    /**
-     * ✅ Create enhanced fallback transits with location-specific data
-     */
+    
     private List<Map<String, Object>> createEnhancedFallbackTransits(String birthLocation) {
         List<Map<String, Object>> fallbackTransits = new ArrayList<>();
         LocalDateTime now = LocalDateTime.now();
@@ -642,7 +595,6 @@ private Map<String, Double> createFallbackPlanetaryPositions() {
         return convertMapsToTransitResponses(fallbackMaps);
     }
 
-    // ================ ENHANCED PRIVATE HELPER METHODS ================
 
     private boolean hasCompleteBirthData(User user) {
         return user.getBirthDateTime() != null && 
