@@ -13,10 +13,6 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Activity Log Entity for Vedic Astrology Application
- * Tracks all user activities for analytics and audit purposes
- */
 @Entity
 @Table(name = "activity_logs", indexes = {
     @Index(name = "idx_activity_username", columnList = "username"),
@@ -122,8 +118,6 @@ public class ActivityLog {
     @Column(name = "correlation_id", length = 100)
     private String correlationId;
     
-    // ================ CONSTRUCTORS ================
-    
     public ActivityLog(String username, String activityType, String description) {
         this.username = username;
         this.activityType = activityType;
@@ -141,16 +135,11 @@ public class ActivityLog {
     }
     
     public ActivityLog(String username, String activityType, String description, String ipAddress, 
-                      String deviceType, String sessionId) {
+                       String deviceType, String sessionId) {
         this(username, activityType, description, ipAddress, deviceType);
         this.sessionId = sessionId;
     }
     
-    // ================ UTILITY METHODS ================
-    
-    /**
-     * Add metadata entry
-     */
     public void addMetadata(String key, Object value) {
         if (this.metadata == null) {
             this.metadata = new HashMap<>();
@@ -158,69 +147,42 @@ public class ActivityLog {
         this.metadata.put(key, value);
     }
     
-    /**
-     * Get metadata value
-     */
     public Object getMetadata(String key) {
         return this.metadata != null ? this.metadata.get(key) : null;
     }
     
-    /**
-     * Check if activity was successful
-     */
     public boolean isSuccessful() {
         return "SUCCESS".equalsIgnoreCase(this.status);
     }
     
-    /**
-     * Check if activity failed
-     */
     public boolean isFailed() {
         return "FAILED".equalsIgnoreCase(this.status) || "ERROR".equalsIgnoreCase(this.status);
     }
     
-    /**
-     * Set as failed with error details
-     */
     public void setFailed(String errorMessage) {
         this.status = "FAILED";
         this.errorDetails = errorMessage;
     }
     
-    /**
-     * Set duration from start time
-     */
     public void setDurationFromStart(LocalDateTime startTime) {
         if (startTime != null && this.timestamp != null) {
             this.durationMs = java.time.Duration.between(startTime, this.timestamp).toMillis();
         }
     }
     
-    /**
-     * Get formatted timestamp
-     */
     public String getFormattedTimestamp() {
         return timestamp != null ? timestamp.format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) : null;
     }
     
-    /**
-     * Get activity age in minutes
-     */
     public long getAgeInMinutes() {
         return timestamp != null ? 
             java.time.Duration.between(timestamp, LocalDateTime.now()).toMinutes() : 0;
     }
     
-    /**
-     * Check if activity is recent (within last hour)
-     */
     public boolean isRecent() {
         return getAgeInMinutes() <= 60;
     }
     
-    /**
-     * Builder pattern for easy construction
-     */
     public static ActivityLogBuilder builder() {
         return new ActivityLogBuilder();
     }
