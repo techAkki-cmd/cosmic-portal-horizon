@@ -34,10 +34,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.regex.Pattern;
 
-/**
- * Comprehensive User Service for Vedic Astrology Application
- * Handles all user management, profile operations, and business logic
- */
+
 @Service
 @Transactional
 @Slf4j
@@ -49,7 +46,6 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final ObjectMapper objectMapper;
     
-    // Configuration
     @Value("${app.upload.profile-pictures:/uploads/profile-pictures}")
     private String profilePictureUploadPath;
     
@@ -62,7 +58,6 @@ public class UserService {
     @Value("${app.user.activity.page-size:20}")
     private int defaultActivityPageSize;
     
-    // Constants
     private static final List<String> ALLOWED_IMAGE_TYPES = Arrays.asList(
         "image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"
     );
@@ -73,11 +68,7 @@ public class UserService {
     
     private static final DateTimeFormatter TIMESTAMP_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     
-    // ================ BASIC USER OPERATIONS ================
-    
-    /**
-     * Find user by username with enhanced error handling
-     */
+   
     public User findByUsername(String username) {
         if (username == null || username.trim().isEmpty()) {
             throw new IllegalArgumentException("Username cannot be null or empty");
@@ -87,9 +78,7 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("User not found: " + username));
     }
     
-    /**
-     * Find user by email with enhanced error handling
-     */
+    
     public User findByEmail(String email) {
         if (email == null || email.trim().isEmpty()) {
             throw new IllegalArgumentException("Email cannot be null or empty");
@@ -99,9 +88,7 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
     }
     
-    /**
-     * Find user by username or email
-     */
+    
     public User findByUsernameOrEmail(String identifier) {
         if (identifier == null || identifier.trim().isEmpty()) {
             throw new IllegalArgumentException("User identifier cannot be null or empty");
@@ -111,9 +98,7 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("User not found: " + identifier));
     }
     
-    /**
-     * Check if username exists
-     */
+    
     public boolean existsByUsername(String username) {
         if (username == null || username.trim().isEmpty()) {
             return false;
@@ -135,10 +120,8 @@ public class UserService {
                 throw new IllegalArgumentException("User cannot be null");
             }
             
-            // Set updated timestamp
             user.setUpdatedAt(LocalDateTime.now());
             
-            // If it's a new user, set created timestamp
             if (user.getId() == null) {
                 // This is a new user
                 System.out.println("💾 Creating new user: " + user.getUsername());
@@ -171,9 +154,7 @@ public class UserService {
         }
     }
     
-    /**
-     * Check if email exists
-     */
+    
     public boolean existsByEmail(String email) {
         if (email == null || email.trim().isEmpty()) {
             return false;
@@ -181,12 +162,6 @@ public class UserService {
         return userRepository.existsByEmailIgnoreCase(email.trim());
     }
     
-    // ================ PROFILE MANAGEMENT ================
-    
-    /**
-     * Get comprehensive user profile
-     */
-    // In UserService.java - verify this method returns proper data
 public UserProfileResponse getUserProfile(String username) {
     try {
         log.info("📋 Retrieving profile for user: {}", username);
@@ -194,7 +169,6 @@ public UserProfileResponse getUserProfile(String username) {
         User user = findByUsername(username);
         UserProfileResponse profile = createUserProfileResponse(user);
         
-        // ✅ DEBUG: Log the response structure
         log.info("🔍 Created profile response: id={}, username={}, email={}", 
             profile.getId(), profile.getUsername(), profile.getEmail());
         
@@ -220,9 +194,7 @@ public boolean deleteUser(String username) {
         }
     }
     
-    /**
-     * Update user profile with audit trail
-     */
+    
     public UserProfileResponse updateProfile(String username, UserProfileRequest request, String clientIp) {
         try {
             log.info("📝 Updating profile for user: {} from IP: {}", username, clientIp);
@@ -262,9 +234,7 @@ public boolean deleteUser(String username) {
         }
     }
     
-    /**
-     * Get basic user information for UI
-     */
+    /
     public Map<String, Object> getBasicUserInfo(String username) {
         try {
             User user = findByUsername(username);
@@ -296,11 +266,7 @@ public boolean deleteUser(String username) {
         }
     }
     
-    // ================ BIRTH DATA MANAGEMENT ================
     
-    /**
-     * Get user's birth data
-     */
     public BirthDataResponse getBirthData(String username) {
         try {
             log.info("🌟 Retrieving birth data for user: {}", username);
@@ -332,9 +298,7 @@ public boolean deleteUser(String username) {
         }
     }
     
-    /**
-     * Update user's birth data with validation and audit
-     */
+  
     public BirthDataResponse updateBirthData(String username, BirthData birthData, String clientIp) {
         try {
             log.info("🌟 Updating birth data for user: {} from IP: {}", username, clientIp);
@@ -389,9 +353,7 @@ public boolean deleteUser(String username) {
         }
     }
     
-    /**
-     * Validate birth data without saving
-     */
+   
     public Map<String, Object> validateBirthData(BirthData birthData) {
         Map<String, Object> validation = new HashMap<>();
         List<String> errors = new ArrayList<>();
@@ -449,11 +411,7 @@ public boolean deleteUser(String username) {
         return validation;
     }
     
-    // ================ PREFERENCES MANAGEMENT ================
     
-    /**
-     * Get user preferences
-     */
     public UserPreferencesResponse getUserPreferences(String username) {
         try {
             User user = findByUsername(username);
